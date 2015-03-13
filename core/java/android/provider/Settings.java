@@ -8596,6 +8596,11 @@ public final class Settings {
         public static final String CONTACT_METADATA_SYNC = "contact_metadata_sync";
 
         /**
+         * @hide
+         */
+        public static final String SIDE_BAR_MODE = "side_bar_mode";
+
+        /**
          * Whether to enable cellular on boot.
          * The value 1 - enable, 0 - disable
          * @hide
