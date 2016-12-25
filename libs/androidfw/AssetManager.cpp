@@ -77,6 +77,7 @@ static const char* kAssetsRoot = "assets";
 static const char* kAppZipName = NULL; //"classes.jar";
 static const char* kSystemAssets = "framework/framework-res.apk";
 static const char* kCMSDKAssets = "framework/org.cyanogenmod.platform-res.apk";
+static const char* kSOSSDKAssets = "framework/framework-smartisanos-res/framework-smartisanos-res.apk";
 static const char* kAndroidManifest = "AndroidManifest.xml";
 static const int   kComposedIconAsset = 128;
 
@@ -511,7 +512,10 @@ bool AssetManager::addDefaultAssets()
     String8 pathCM(root);
     pathCM.appendPath(kCMSDKAssets);
 
-    return addAssetPath(path, NULL) & addAssetPath(pathCM, NULL);
+    String8 pathSOS(root);
+    pathSOS.appendPath(kSOSSDKAssets);
+
+    return addAssetPath(path, NULL) & addAssetPath(pathCM, NULL) & addAssetPath(pathSOS, NULL);
 }
 
 int32_t AssetManager::nextAssetPath(const int32_t cookie) const

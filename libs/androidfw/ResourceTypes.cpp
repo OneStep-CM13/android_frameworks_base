@@ -61,6 +61,7 @@ namespace android {
 
 #define APP_PACKAGE_ID      0x7f
 #define CMSDK_PACKAGE_ID    0x3f
+#define SOSSDK_PACKAGE_ID   0x02
 #define SYS_PACKAGE_ID      0x01
 #define OVERLAY_CMSDK_PACKAGE_ID    0x63
 #define OVERLAY_APP_PACKAGE_ID      0x61
@@ -3534,7 +3535,7 @@ void ResTable::Theme::dumpToLog() const
 }
 
 ResTable::ResTable()
-    : mError(NO_INIT), mNextPackageId(2)
+    : mError(NO_INIT), mNextPackageId(Res_FIRSTLIBPACKAGEID)
 {
     memset(&mParams, 0, sizeof(mParams));
     memset(mPackageMap, 0, sizeof(mPackageMap));
@@ -3544,7 +3545,7 @@ ResTable::ResTable()
 }
 
 ResTable::ResTable(const void* data, size_t size, const int32_t cookie, bool copyData)
-    : mError(NO_INIT), mNextPackageId(2)
+    : mError(NO_INIT), mNextPackageId(Res_FIRSTLIBPACKAGEID)
 {
     memset(&mParams, 0, sizeof(mParams));
     memset(mPackageMap, 0, sizeof(mPackageMap));
@@ -6388,6 +6389,7 @@ DynamicRefTable::DynamicRefTable(uint8_t packageId)
     // Reserved package ids
     mLookupTable[APP_PACKAGE_ID] = APP_PACKAGE_ID;
     mLookupTable[SYS_PACKAGE_ID] = SYS_PACKAGE_ID;
+    mLookupTable[SOSSDK_PACKAGE_ID] = SOSSDK_PACKAGE_ID;
     mLookupTable[CMSDK_PACKAGE_ID] = CMSDK_PACKAGE_ID;
     mLookupTable[OVERLAY_APP_PACKAGE_ID] = OVERLAY_APP_PACKAGE_ID;
     mLookupTable[OVERLAY_SYS_PACKAGE_ID] = OVERLAY_SYS_PACKAGE_ID;
@@ -6805,7 +6807,7 @@ bool ResTable::isDynamicPackageId(const uint32_t pkgId) const {
     return pkgId != APP_PACKAGE_ID && pkgId != SYS_PACKAGE_ID
             && pkgId != OVERLAY_APP_PACKAGE_ID && pkgId != OVERLAY_SYS_PACKAGE_ID
             && pkgId != OVERLAY_COMMON_PACKAGE_ID && pkgId != CMSDK_PACKAGE_ID
-            && pkgId != OVERLAY_CMSDK_PACKAGE_ID;
+            && pkgId != OVERLAY_CMSDK_PACKAGE_ID && pkgId != SOSSDK_PACKAGE_ID;
 }
 
 status_t ResTable::removeIdmappedTypesFromPackageGroup(PackageGroup* packageGroup) const {
