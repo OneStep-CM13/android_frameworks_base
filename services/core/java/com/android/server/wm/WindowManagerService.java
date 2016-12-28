@@ -6270,7 +6270,6 @@ public class WindowManagerService extends IWindowManager.Stub
         Bitmap bm = null;
 
         int maxLayer = 0;
-        int statusBarHeight = 0;
         final Rect frame = new Rect();
         final Rect stackBounds = new Rect();
 
@@ -6297,8 +6296,6 @@ public class WindowManagerService extends IWindowManager.Stub
 
         final int aboveAppLayer = (mPolicy.windowTypeToLayerLw(TYPE_APPLICATION) + 1)
                 * TYPE_LAYER_MULTIPLIER + TYPE_LAYER_OFFSET;
-
-        boolean isFullScreen = false;
 
         while (true) {
             if (retryCount++ > 0) {
@@ -6374,11 +6371,6 @@ public class WindowManagerService extends IWindowManager.Stub
                         }
                     }
 
-                    if ((ws.mAttrs.flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0 ||
-                            (ws.mSystemUiVisibility & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0) {
-                        isFullScreen = true;
-                    }
-
                     if (ws.mAppToken != null && ws.mAppToken.token == appToken &&
                             ws.isDisplayedLw() && winAnim.mSurfaceShown) {
                         screenshotReady = true;
@@ -6408,11 +6400,6 @@ public class WindowManagerService extends IWindowManager.Stub
                     if (DEBUG_SCREENSHOT) Slog.i(TAG, "Screenshot: No image ready for " + appToken
                             + ", " + appWin + " drawState=" + appWin.mWinAnimator.mDrawState);
                     continue;
-                }
-
-                if (!isFullScreen) {
-                    statusBarHeight =
-                            mContext.getResources().getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height);
                 }
 
                 // Screenshot is ready to be taken. Everything from here below will continue
@@ -6446,7 +6433,6 @@ public class WindowManagerService extends IWindowManager.Stub
                     height = frame.height();
                 }
 
-                /*
                 // Tell surface flinger what part of the image to crop. Take the top
                 // right part of the application, and crop the larger dimension to fit.
                 Rect crop = new Rect(frame);
@@ -6457,8 +6443,6 @@ public class WindowManagerService extends IWindowManager.Stub
                     int cropHeight = (int)((float)height / (float)width * frame.width());
                     crop.bottom = crop.top + cropHeight;
                 }
-                */
-                Rect crop = ThumbModeHelper.getInstance().getAppScreenRect(dw, dh, statusBarHeight);
 
                 // The screenshot API does not apply the current screen rotation.
                 int rot = getDefaultDisplayContentLocked().getDisplay().getRotation();
